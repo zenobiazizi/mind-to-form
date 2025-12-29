@@ -28,7 +28,7 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import ThemeSwitcher from '@/components/ThemeSwitcher';
+
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ const Dashboard: React.FC = () => {
             </div>
             <span className="text-xl font-bold text-foreground">SuperForm</span>
           </div>
-          <ThemeSwitcher />
+          
         </div>
       </header>
 
@@ -113,76 +113,84 @@ const Dashboard: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-card border border-border rounded-2xl p-6 hover:shadow-lg transition-shadow"
+              className="bg-card border border-border rounded-2xl overflow-hidden hover:shadow-lg transition-shadow"
             >
-              {/* Card Header */}
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-foreground truncate mb-2">
-                    {form.form_meta.title}
-                  </h3>
+              {/* Card Content */}
+              <div className="p-6">
+                {/* Status Badge */}
+                <div className="mb-4">
                   {getStatusBadge(form.form_meta.status)}
                 </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0">
-                      <MoreHorizontal className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => openRenameDialog(form.form_meta.uuid, form.form_meta.title)}>
-                      <Pencil className="w-4 h-4 mr-2" />
-                      重命名
-                    </DropdownMenuItem>
-                    {form.form_meta.status === 'published' && (
-                      <DropdownMenuItem onClick={() => closeForm(form.form_meta.uuid)}>
-                        <Square className="w-4 h-4 mr-2" />
-                        停止收集
-                      </DropdownMenuItem>
-                    )}
-                    <DropdownMenuItem 
-                      onClick={() => deleteForm(form.form_meta.uuid)}
-                      className="text-destructive focus:text-destructive"
-                    >
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      删除
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
 
-              {/* Stats */}
-              <div className="mb-4">
-                <div className="text-3xl font-bold text-primary">
-                  {form.form_meta.stat_responses}
+                {/* Title */}
+                <h3 className="text-xl font-bold text-foreground mb-3 line-clamp-2">
+                  {form.form_meta.title}
+                </h3>
+
+                {/* Description - show form description if available */}
+                <p className="text-sm text-muted-foreground mb-6 line-clamp-3">
+                  {form.form_meta.description || '暂无描述'}
+                </p>
+
+                {/* Stats Row */}
+                <div className="flex items-center gap-8 mb-6">
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">RESPONSES</p>
+                    <p className="text-2xl font-bold text-foreground">{form.form_meta.stat_responses}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">VIEWS</p>
+                    <p className="text-2xl font-bold text-foreground">{form.form_meta.stat_pv}</p>
+                  </div>
                 </div>
-                <div className="text-sm text-muted-foreground">已回收</div>
-              </div>
 
-              {/* Footer */}
-              <div className="flex items-center justify-between pt-4 border-t border-border">
-                <span className="text-xs text-muted-foreground">
-                  {form.form_meta.created_at}
-                </span>
-                <div className="flex gap-2">
+                {/* Action Buttons */}
+                <div className="flex items-center justify-end gap-2">
                   <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => navigate(`/editor/${form.form_meta.uuid}`)}
-                    className="text-xs"
-                  >
-                    <Edit3 className="w-3.5 h-3.5 mr-1" />
-                    编辑
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
+                    variant="outline"
+                    size="icon"
                     onClick={() => navigate(`/stats/${form.form_meta.uuid}`)}
-                    className="text-xs"
+                    className="h-10 w-10 rounded-full"
+                    title="查看数据"
                   >
-                    <BarChart3 className="w-3.5 h-3.5 mr-1" />
-                    数据
+                    <BarChart3 className="w-4 h-4" />
                   </Button>
+                  
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        className="h-10 w-10 rounded-full text-destructive hover:text-destructive hover:bg-destructive/10"
+                        title="更多操作"
+                      >
+                        <MoreHorizontal className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => navigate(`/editor/${form.form_meta.uuid}`)}>
+                        <Edit3 className="w-4 h-4 mr-2" />
+                        编辑表单
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => openRenameDialog(form.form_meta.uuid, form.form_meta.title)}>
+                        <Pencil className="w-4 h-4 mr-2" />
+                        重命名
+                      </DropdownMenuItem>
+                      {form.form_meta.status === 'published' && (
+                        <DropdownMenuItem onClick={() => closeForm(form.form_meta.uuid)}>
+                          <Square className="w-4 h-4 mr-2" />
+                          停止收集
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuItem 
+                        onClick={() => deleteForm(form.form_meta.uuid)}
+                        className="text-destructive focus:text-destructive"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        删除
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
             </motion.div>

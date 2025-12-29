@@ -7,7 +7,7 @@ import LoadingOverlay from '@/components/LoadingOverlay';
 import { generateFormFromPrompt } from '@/lib/ai';
 import { useFormStore } from '@/stores/formStore';
 import { Button } from '@/components/ui/button';
-import ThemeSwitcher from '@/components/ThemeSwitcher';
+
 
 const CreateForm: React.FC = () => {
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const CreateForm: React.FC = () => {
               <span className="text-xl font-bold text-foreground">新建表单</span>
             </div>
           </div>
-          <ThemeSwitcher />
+          
         </div>
       </header>
 
