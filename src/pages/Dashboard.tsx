@@ -1,41 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
   Plus, 
   FileText, 
-  Edit3, 
   BarChart3, 
-  MoreHorizontal,
   Trash2,
-  Square,
-  Pencil
+  Pause,
+  Play
 } from 'lucide-react';
 import { useFormStore } from '@/stores/formStore';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const { forms, deleteForm, renameForm, closeForm } = useFormStore();
-  const [renameDialogOpen, setRenameDialogOpen] = useState(false);
-  const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
-  const [newTitle, setNewTitle] = useState('');
+  const { forms, deleteForm, closeForm, reopenForm } = useFormStore();
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -48,21 +29,6 @@ const Dashboard: React.FC = () => {
       default:
         return null;
     }
-  };
-
-  const handleRename = () => {
-    if (selectedFormId && newTitle.trim()) {
-      renameForm(selectedFormId, newTitle.trim());
-      setRenameDialogOpen(false);
-      setSelectedFormId(null);
-      setNewTitle('');
-    }
-  };
-
-  const openRenameDialog = (formId: string, currentTitle: string) => {
-    setSelectedFormId(formId);
-    setNewTitle(currentTitle);
-    setRenameDialogOpen(true);
   };
 
   return (
@@ -110,8 +76,23 @@ const Dashboard: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-card border border-border rounded-2xl overflow-hidden hover:shadow-lg transition-shadow"
+              className="group relative bg-card border border-border rounded-2xl overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+              onClick={() => navigate(`/editor/${form.form_meta.uuid}`)}
             >
+              {/* Delete button - appears on hover */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteForm(form.form_meta.uuid);
+                }}
+                className="absolute top-4 right-4 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                title="删除"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+
               {/* Card Content */}
               <div className="p-6">
                 {/* Status Badge */}
@@ -124,70 +105,67 @@ const Dashboard: React.FC = () => {
                   {form.form_meta.title}
                 </h3>
 
-                {/* Description - show form description if available */}
+                {/* Description */}
                 <p className="text-sm text-muted-foreground mb-6 line-clamp-3">
                   {form.form_meta.description || '暂无描述'}
                 </p>
 
-                {/* Stats Row */}
-                <div className="flex items-center gap-8 mb-6">
-                  <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">RESPONSES</p>
-                    <p className="text-2xl font-bold text-foreground">{form.form_meta.stat_responses}</p>
+                {/* Stats Row with Action Buttons */}
+                <div className="flex items-end justify-between">
+                  <div className="flex items-center gap-8">
+                    <div>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">RESPONSES</p>
+                      <p className="text-2xl font-bold text-foreground">{form.form_meta.stat_responses}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">VIEWS</p>
+                      <p className="text-2xl font-bold text-foreground">{form.form_meta.stat_pv}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">VIEWS</p>
-                    <p className="text-2xl font-bold text-foreground">{form.form_meta.stat_pv}</p>
-                  </div>
-                </div>
 
-                {/* Action Buttons */}
-                <div className="flex items-center justify-end gap-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => navigate(`/stats/${form.form_meta.uuid}`)}
-                    className="h-10 w-10 rounded-full"
-                    title="查看数据"
-                  >
-                    <BarChart3 className="w-4 h-4" />
-                  </Button>
-                  
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
+                  {/* Action Buttons */}
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/stats/${form.form_meta.uuid}`);
+                      }}
+                      className="h-10 w-10 rounded-full"
+                      title="查看数据"
+                    >
+                      <BarChart3 className="w-4 h-4" />
+                    </Button>
+                    
+                    {form.form_meta.status === 'published' ? (
                       <Button 
                         variant="outline" 
                         size="icon" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          closeForm(form.form_meta.uuid);
+                        }}
                         className="h-10 w-10 rounded-full text-destructive hover:text-destructive hover:bg-destructive/10"
-                        title="更多操作"
+                        title="暂停收集"
                       >
-                        <MoreHorizontal className="w-4 h-4" />
+                        <Pause className="w-4 h-4" />
                       </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => navigate(`/editor/${form.form_meta.uuid}`)}>
-                        <Edit3 className="w-4 h-4 mr-2" />
-                        编辑表单
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => openRenameDialog(form.form_meta.uuid, form.form_meta.title)}>
-                        <Pencil className="w-4 h-4 mr-2" />
-                        重命名
-                      </DropdownMenuItem>
-                      {form.form_meta.status === 'published' && (
-                        <DropdownMenuItem onClick={() => closeForm(form.form_meta.uuid)}>
-                          <Square className="w-4 h-4 mr-2" />
-                          停止收集
-                        </DropdownMenuItem>
-                      )}
-                      <DropdownMenuItem 
-                        onClick={() => deleteForm(form.form_meta.uuid)}
-                        className="text-destructive focus:text-destructive"
+                    ) : form.form_meta.status === 'closed' ? (
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          reopenForm(form.form_meta.uuid);
+                        }}
+                        className="h-10 w-10 rounded-full text-green-600 hover:text-green-600 hover:bg-green-500/10"
+                        title="启动收集"
                       >
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        删除
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                        <Play className="w-4 h-4" />
+                      </Button>
+                    ) : null}
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -201,27 +179,6 @@ const Dashboard: React.FC = () => {
           </div>
         )}
       </main>
-
-      {/* Rename Dialog */}
-      <Dialog open={renameDialogOpen} onOpenChange={setRenameDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>重命名表单</DialogTitle>
-          </DialogHeader>
-          <Input
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-            placeholder="输入新名称"
-            className="mt-4"
-          />
-          <DialogFooter className="mt-4">
-            <Button variant="outline" onClick={() => setRenameDialogOpen(false)}>
-              取消
-            </Button>
-            <Button onClick={handleRename}>确认</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
