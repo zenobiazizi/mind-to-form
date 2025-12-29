@@ -183,6 +183,9 @@ export const generateFormFromPrompt = async (prompt: string): Promise<FormData> 
       description,
       theme_id: 'theme_default',
       created_at: new Date().toISOString().split('T')[0],
+      status: 'draft' as const,
+      stat_pv: 0,
+      stat_responses: 0,
     },
     questions,
   };

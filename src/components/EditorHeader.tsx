@@ -1,27 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Eye, Link2, ArrowLeft, Palette } from 'lucide-react';
+import { Eye, Share2, ArrowLeft, Palette, Save } from 'lucide-react';
 import { useFormStore } from '@/stores/formStore';
 import ThemeSwitcher from './ThemeSwitcher';
-import { toast } from '@/hooks/use-toast';
 
 interface EditorHeaderProps {
   onPreview: () => void;
   onBack: () => void;
+  onPublish?: () => void;
+  onSave?: () => void;
+  isPublished?: boolean;
 }
 
-const EditorHeader: React.FC<EditorHeaderProps> = ({ onPreview, onBack }) => {
-  const { formData } = useFormStore();
-
-  const handleCopyLink = () => {
-    const url = `${window.location.origin}/view/${formData.form_meta.uuid}`;
-    navigator.clipboard.writeText(url);
-    toast({
-      title: '链接已复制',
-      description: '表单链接已复制到剪贴板',
-    });
-  };
-
+const EditorHeader: React.FC<EditorHeaderProps> = ({ onPreview, onBack, onPublish, onSave, isPublished }) => {
   return (
     <motion.header
       initial={{ opacity: 0, y: -20 }}
@@ -46,6 +37,18 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ onPreview, onBack }) => {
               <ThemeSwitcher />
             </div>
 
+            {onSave && (
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onSave}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted-foreground bg-muted/50 hover:bg-muted rounded-lg transition-colors"
+              >
+                <Save className="w-4 h-4" />
+                保存
+              </motion.button>
+            )}
+
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -56,15 +59,17 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({ onPreview, onBack }) => {
               预览
             </motion.button>
 
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleCopyLink}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
-            >
-              <Link2 className="w-4 h-4" />
-              复制链接
-            </motion.button>
+            {onPublish && (
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onPublish}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
+              >
+                <Share2 className="w-4 h-4" />
+                {isPublished ? '分享' : '发布'}
+              </motion.button>
+            )}
           </div>
         </div>
       </div>

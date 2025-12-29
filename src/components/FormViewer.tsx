@@ -8,9 +8,10 @@ import { cn } from '@/lib/utils';
 interface FormViewerProps {
   formData: FormData;
   isPreview?: boolean;
+  onSubmit?: (answers: { question_id: string; value: string | string[] | number }[]) => void;
 }
 
-const FormViewer: React.FC<FormViewerProps> = ({ formData, isPreview = false }) => {
+const FormViewer: React.FC<FormViewerProps> = ({ formData, isPreview = false, onSubmit }) => {
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [submitted, setSubmitted] = useState(false);
 
@@ -18,6 +19,13 @@ const FormViewer: React.FC<FormViewerProps> = ({ formData, isPreview = false }) 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (onSubmit) {
+      const formattedAnswers = Object.entries(answers).map(([question_id, value]) => ({
+        question_id,
+        value,
+      }));
+      onSubmit(formattedAnswers);
+    }
     setSubmitted(true);
   };
 
