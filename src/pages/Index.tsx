@@ -76,11 +76,10 @@ const Index: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4"
+                className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4"
               >
-                用一句话
-                <br />
-                <span className="text-gradient">创建精美表单</span>
+                <span className="text-foreground">用一句话</span>
+                <span className="text-primary">创建精美表单</span>
               </motion.h1>
 
               <motion.p
