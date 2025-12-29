@@ -114,12 +114,12 @@ const Dashboard: React.FC = () => {
                 <div className="flex items-end justify-between">
                   <div className="flex items-center gap-8">
                     <div>
-                      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">RESPONSES</p>
-                      <p className="text-2xl font-bold text-foreground">{form.form_meta.stat_responses}</p>
-                    </div>
-                    <div>
                       <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">VIEWS</p>
                       <p className="text-2xl font-bold text-foreground">{form.form_meta.stat_pv}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">RESPONSES</p>
+                      <p className="text-2xl font-bold text-foreground">{form.form_meta.stat_responses}</p>
                     </div>
                   </div>
 
