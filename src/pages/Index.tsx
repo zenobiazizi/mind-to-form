@@ -86,7 +86,7 @@ const Index: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-lg text-muted-foreground mb-12 max-w-lg mx-auto"
+                className="text-lg text-muted-foreground mb-12 whitespace-nowrap"
               >
                 AI 自动设计问题逻辑，生成高颜值表单。告别繁琐操作，专注内容本身。
               </motion.p>
