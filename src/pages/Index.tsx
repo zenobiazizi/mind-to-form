@@ -78,7 +78,7 @@ const Index: React.FC = () => {
             y: 0
           }} transition={{
             delay: 0.1
-          }} className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4 whitespace-nowrap">
+          }} className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4 whitespace-nowrap text-center">
                 用一句话 <span className="text-primary">创建精美表单</span>
               </motion.h1>
 
@@ -90,7 +90,7 @@ const Index: React.FC = () => {
             y: 0
           }} transition={{
             delay: 0.2
-          }} className="text-lg text-muted-foreground mb-12 max-w-lg mx-auto whitespace-nowrap">
+          }} className="text-lg text-muted-foreground mb-12 max-w-lg mx-auto whitespace-nowrap text-center">
                 AI 自动设计问题逻辑，生成高颜值表单。告别繁琐操作，专注内容本身。
               </motion.p>
 
