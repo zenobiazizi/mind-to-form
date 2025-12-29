@@ -78,10 +78,8 @@ const Index: React.FC = () => {
             y: 0
           }} transition={{
             delay: 0.1
-          }} className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4">
-                用一句话
-                <br />
-                <span className="text-gradient">创建精美表单</span>
+          }} className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-4 whitespace-nowrap">
+                用一句话 <span className="text-primary">创建精美表单</span>
               </motion.h1>
 
               <motion.p initial={{
@@ -92,7 +90,7 @@ const Index: React.FC = () => {
             y: 0
           }} transition={{
             delay: 0.2
-          }} className="text-lg text-muted-foreground mb-12 max-w-lg mx-auto">
+          }} className="text-lg text-muted-foreground mb-12 max-w-lg mx-auto whitespace-nowrap">
                 AI 自动设计问题逻辑，生成高颜值表单。告别繁琐操作，专注内容本身。
               </motion.p>
 
