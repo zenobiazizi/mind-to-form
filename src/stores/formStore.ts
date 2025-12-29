@@ -28,6 +28,7 @@ interface FormStore {
   renameForm: (uuid: string, title: string) => void;
   publishForm: (uuid: string) => void;
   closeForm: (uuid: string) => void;
+  reopenForm: (uuid: string) => void;
   
   addResponse: (formId: string, answers: FormResponse['answers']) => void;
   getFormResponses: (formId: string) => FormResponse[];
@@ -240,6 +241,15 @@ export const useFormStore = create<FormStore>()(
           forms: state.forms.map((f) =>
             f.form_meta.uuid === uuid
               ? { ...f, form_meta: { ...f.form_meta, status: 'closed' as FormStatus } }
+              : f
+          ),
+        })),
+
+      reopenForm: (uuid) =>
+        set((state) => ({
+          forms: state.forms.map((f) =>
+            f.form_meta.uuid === uuid
+              ? { ...f, form_meta: { ...f.form_meta, status: 'published' as FormStatus } }
               : f
           ),
         })),
