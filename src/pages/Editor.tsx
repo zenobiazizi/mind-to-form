@@ -37,8 +37,12 @@ const Editor: React.FC = () => {
       saveForm();
       if (formData.form_meta.status === 'draft') {
         publishForm(id);
+        // After publishing, show the share modal
+        setTimeout(() => setShareModalOpen(true), 100);
+      } else if (formData.form_meta.status === 'published') {
+        // Already published, just show share modal
+        setShareModalOpen(true);
       }
-      setShareModalOpen(true);
     }
   };
 
@@ -98,6 +102,7 @@ const Editor: React.FC = () => {
         open={shareModalOpen}
         onOpenChange={setShareModalOpen}
         publishUrl={formData.form_meta.publish_url}
+        isPublished={formData.form_meta.status === 'published'}
       />
     </div>
   );

@@ -22,7 +22,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import ThemeSwitcher from '@/components/ThemeSwitcher';
+
 import * as XLSX from 'xlsx';
 
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))', 'hsl(var(--chart-5))'];
@@ -168,13 +168,10 @@ const StatsPage: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={handleExport} disabled={responses.length === 0}>
-              <Download className="w-4 h-4 mr-2" />
-              导出数据
-            </Button>
-            <ThemeSwitcher />
-          </div>
+          <Button variant="outline" onClick={handleExport} disabled={responses.length === 0}>
+            <Download className="w-4 h-4 mr-2" />
+            导出数据
+          </Button>
         </div>
       </header>
 

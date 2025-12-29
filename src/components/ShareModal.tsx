@@ -15,9 +15,10 @@ interface ShareModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   publishUrl?: string;
+  isPublished?: boolean;
 }
 
-const ShareModal: React.FC<ShareModalProps> = ({ open, onOpenChange, publishUrl }) => {
+const ShareModal: React.FC<ShareModalProps> = ({ open, onOpenChange, publishUrl, isPublished }) => {
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = async () => {
@@ -63,7 +64,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ open, onOpenChange, publishUrl 
     img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
   };
 
-  if (!publishUrl) return null;
+  if (!publishUrl || !isPublished) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
