@@ -1,4 +1,5 @@
 export type QuestionType = 'radio' | 'checkbox' | 'text' | 'rating';
+export type FormStatus = 'draft' | 'published' | 'closed';
 
 export interface Option {
   id: string;
@@ -21,11 +22,27 @@ export interface FormMeta {
   description: string;
   theme_id: 'theme_default' | 'theme_night' | 'theme_warm' | 'theme_fresh';
   created_at: string;
+  status: FormStatus;
+  publish_url?: string;
+  stat_pv: number;
+  stat_responses: number;
 }
 
 export interface FormData {
   form_meta: FormMeta;
   questions: Question[];
+}
+
+export interface Answer {
+  question_id: string;
+  value: string | string[] | number;
+}
+
+export interface FormResponse {
+  id: string;
+  form_id: string;
+  submitted_at: string;
+  answers: Answer[];
 }
 
 export const THEME_OPTIONS = [
@@ -42,6 +59,9 @@ export const DEFAULT_FORM: FormData = {
     description: '',
     theme_id: 'theme_default',
     created_at: new Date().toISOString().split('T')[0],
+    status: 'draft',
+    stat_pv: 0,
+    stat_responses: 0,
   },
   questions: [],
 };
