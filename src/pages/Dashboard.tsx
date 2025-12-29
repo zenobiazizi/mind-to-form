@@ -100,10 +100,7 @@ const Dashboard: React.FC = () => {
             <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <Plus className="w-7 h-7 text-primary" />
             </div>
-            <div className="text-center">
-              <p className="font-semibold text-foreground">AI 新建表单</p>
-              <p className="text-sm text-muted-foreground mt-1">用一句话创建精美表单</p>
-            </div>
+            <p className="font-semibold text-foreground">AI 新建表单</p>
           </motion.div>
 
           {/* Form Cards */}
