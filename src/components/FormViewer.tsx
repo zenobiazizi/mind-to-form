@@ -110,31 +110,50 @@ const FormViewer: React.FC<FormViewerProps> = ({ formData, isPreview = false, on
     );
   }
 
+  // Theme-specific font classes
+  const getFontClasses = () => {
+    switch (themeStyle) {
+      case 'minimalist':
+        return "font-light tracking-wide text-[15px]";
+      case 'cyber':
+        return "font-normal tracking-normal text-[14px]";
+      case 'soft':
+        return "font-serif text-[15px]";
+      case 'professional':
+        return "font-normal text-[14px]";
+      default:
+        return "text-base";
+    }
+  };
+
   return (
-    <div className={cn("min-h-screen transition-colors duration-500", themeClass)}>
+    <div className={cn("min-h-screen transition-colors duration-500", themeClass, getFontClasses())}>
       <div className={getContainerClasses()}>
-        <div className="max-w-xl mx-auto px-6 py-12">
+        <div className="max-w-xl mx-auto px-5 py-10">
           <motion.form
             onSubmit={handleSubmit}
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="space-y-8"
+            className="space-y-6"
           >
             {/* Header */}
-            <motion.div variants={itemVariants} className="text-center mb-12">
+            <motion.div variants={itemVariants} className="text-center mb-10">
               <h1 className={cn(
-                "text-3xl font-bold text-foreground mb-3 transition-all",
-                themeStyle === 'minimalist' && "font-light tracking-[0.1em] text-4xl",
-                themeStyle === 'soft' && "font-serif",
-                themeStyle === 'cyber' && "text-gradient"
+                "font-bold text-foreground mb-2 transition-all",
+                themeStyle === 'minimalist' && "font-extralight tracking-[0.15em] text-2xl",
+                themeStyle === 'cyber' && "text-xl font-semibold text-gradient",
+                themeStyle === 'soft' && "font-serif text-xl",
+                themeStyle === 'professional' && "text-xl font-semibold"
               )}>
                 {formData.form_meta.title}
               </h1>
               <p className={cn(
-                "text-lg text-muted-foreground leading-relaxed",
-                themeStyle === 'minimalist' && "font-light tracking-wide",
-                themeStyle === 'soft' && "font-serif"
+                "text-muted-foreground leading-relaxed",
+                themeStyle === 'minimalist' && "font-light tracking-wide text-sm",
+                themeStyle === 'cyber' && "text-sm",
+                themeStyle === 'soft' && "font-serif text-sm",
+                themeStyle === 'professional' && "text-sm"
               )}>
                 {formData.form_meta.description}
               </p>
@@ -156,21 +175,21 @@ const FormViewer: React.FC<FormViewerProps> = ({ formData, isPreview = false, on
 
             {/* Submit button */}
             {formData.questions.length > 0 && (
-              <motion.div variants={itemVariants} className="pt-6">
+              <motion.div variants={itemVariants} className="pt-4">
                 <motion.button
                   type="submit"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className={cn(
-                    "w-full py-4 px-6 font-semibold text-lg transition-all flex items-center justify-center gap-2",
+                    "w-full font-medium transition-all flex items-center justify-center gap-2",
                     // Theme-specific button styles
-                    themeStyle === 'minimalist' && "bg-foreground text-background rounded-none font-light tracking-widest hover:bg-foreground/90",
-                    themeStyle === 'cyber' && "bg-gradient-to-r from-primary to-[hsl(290_100%_70%)] text-primary-foreground rounded-2xl shadow-[0_0_20px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_30px_hsl(var(--primary)/0.7)]",
-                    themeStyle === 'soft' && "bg-primary text-primary-foreground rounded-[2rem] shadow-lg font-serif hover:opacity-90",
-                    themeStyle === 'professional' && "bg-primary text-primary-foreground rounded-lg shadow-md hover:bg-primary/90"
+                    themeStyle === 'minimalist' && "py-3 px-5 bg-foreground text-background rounded-none font-light tracking-widest text-sm hover:bg-foreground/90",
+                    themeStyle === 'cyber' && "py-3 px-5 bg-gradient-to-r from-primary to-[hsl(290_100%_70%)] text-primary-foreground rounded-xl text-sm shadow-[0_0_20px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_30px_hsl(var(--primary)/0.7)]",
+                    themeStyle === 'soft' && "py-3 px-5 bg-primary text-primary-foreground rounded-2xl shadow-md font-serif text-sm hover:opacity-90",
+                    themeStyle === 'professional' && "py-3 px-5 bg-primary text-primary-foreground rounded-md shadow-sm text-sm hover:bg-primary/90"
                   )}
                 >
-                  <Send className="w-5 h-5" />
+                  <Send className="w-4 h-4" />
                   提交问卷
                 </motion.button>
               </motion.div>
@@ -336,16 +355,18 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
       className={getCardClasses()}
     >
       <h3 className={cn(
-        "text-xl font-semibold text-foreground mb-4 leading-relaxed",
-        themeStyle === 'minimalist' && "font-light tracking-wide text-lg",
-        themeStyle === 'soft' && "font-serif"
+        "font-semibold text-foreground mb-3 leading-relaxed",
+        themeStyle === 'minimalist' && "font-light tracking-wide text-base",
+        themeStyle === 'cyber' && "text-base font-medium",
+        themeStyle === 'soft' && "font-serif text-base",
+        themeStyle === 'professional' && "text-base font-medium"
       )}>
-        <span className="text-muted-foreground mr-2">{index + 1}.</span>
+        <span className="text-muted-foreground mr-1.5">{index + 1}.</span>
         {question.title}
         {question.required && (
           <span className={cn(
             "ml-1",
-            themeStyle === 'professional' ? "text-destructive font-bold text-lg" : "text-destructive"
+            themeStyle === 'professional' ? "text-destructive font-bold" : "text-destructive"
           )}>*</span>
         )}
       </h3>
@@ -377,9 +398,11 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
                 )}
               </span>
               <span className={cn(
-                "text-foreground font-medium",
-                themeStyle === 'minimalist' && "font-light",
-                themeStyle === 'soft' && "font-serif"
+                "text-foreground",
+                themeStyle === 'minimalist' && "font-light text-sm",
+                themeStyle === 'cyber' && "text-sm",
+                themeStyle === 'soft' && "font-serif text-sm",
+                themeStyle === 'professional' && "text-sm"
               )}>
                 {option.label}
               </span>
@@ -415,9 +438,11 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
                   )}
                 </span>
                 <span className={cn(
-                  "text-foreground font-medium",
-                  themeStyle === 'minimalist' && "font-light",
-                  themeStyle === 'soft' && "font-serif"
+                  "text-foreground",
+                  themeStyle === 'minimalist' && "font-light text-sm",
+                  themeStyle === 'cyber' && "text-sm",
+                  themeStyle === 'soft' && "font-serif text-sm",
+                  themeStyle === 'professional' && "text-sm"
                 )}>
                   {option.label}
                 </span>
@@ -449,7 +474,7 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
 
       {/* Rating */}
       {question.type === 'rating' && (
-        <div className="flex gap-2 justify-center py-2">
+        <div className="flex gap-1.5 justify-center py-2">
           {Array.from({ length: question.maxRating || 5 }).map((_, i) => (
             <motion.button
               key={i}
@@ -457,15 +482,16 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
               onClick={() => onAnswer(i + 1)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="p-1"
+              className="p-0.5"
             >
               <Star
                 className={cn(
-                  "w-10 h-10 transition-all",
+                  "transition-all",
+                  themeStyle === 'minimalist' ? "w-6 h-6" : "w-7 h-7",
                   (answer || 0) > i
                     ? cn(
                         "text-primary fill-primary",
-                        themeStyle === 'cyber' && "drop-shadow-[0_0_8px_hsl(var(--primary))]"
+                        themeStyle === 'cyber' && "drop-shadow-[0_0_6px_hsl(var(--primary))]"
                       )
                     : "text-muted-foreground/30 hover:text-primary/50"
                 )}
