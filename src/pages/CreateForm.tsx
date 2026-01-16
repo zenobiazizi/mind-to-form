@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, FileText, Sparkles } from 'lucide-react';
 import AIInput from '@/components/AIInput';
 import LoadingOverlay from '@/components/LoadingOverlay';
-import { generateFormFromPrompt } from '@/lib/ai';
+import { generateFormFromDify } from '@/api/dify';
 import { useFormStore } from '@/stores/formStore';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 
 const CreateForm: React.FC = () => {
@@ -17,12 +18,13 @@ const CreateForm: React.FC = () => {
   const handleGenerate = async (prompt: string) => {
     setIsLoading(true);
     try {
-      const generatedForm = await generateFormFromPrompt(prompt);
+      const generatedForm = await generateFormFromDify(prompt);
       setFormData(generatedForm);
       saveForm();
       navigate(`/editor/${generatedForm.form_meta.uuid}`);
     } catch (error) {
       console.error('Generation failed:', error);
+      toast.error('表单生成失败，请稍后重试');
     } finally {
       setIsLoading(false);
     }
