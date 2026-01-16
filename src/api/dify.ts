@@ -7,7 +7,8 @@ interface DifyQuestion {
   type: string;
   title: string;
   required?: boolean;
-  options?: Array<{ id?: string; label: string }>;
+  // Dify can return options as string array or object array
+  options?: Array<string | { id?: string; label: string }>;
   placeholder?: string;
   maxRating?: number;
 }
@@ -64,10 +65,23 @@ const parseDifyResponse = (difyData: DifyFormResponse): FormData => {
 
       // Add options for radio/checkbox types
       if (questionType === 'radio' || questionType === 'checkbox') {
-        baseQuestion.options = (q.options || []).map((opt) => ({
-          id: opt.id || `o_${nanoid(6)}`,
-          label: opt.label || '选项',
-        }));
+        const rawOptions = q.options || [];
+        
+        // Handle both string array and object array formats from Dify
+        baseQuestion.options = rawOptions.map((opt) => {
+          // If opt is a string, convert to object format
+          if (typeof opt === 'string') {
+            return {
+              id: `o_${nanoid(6)}`,
+              label: opt,
+            };
+          }
+          // If opt is an object, use its properties
+          return {
+            id: opt.id || `o_${nanoid(6)}`,
+            label: opt.label || '选项',
+          };
+        });
         
         // Ensure at least 2 options
         if (!baseQuestion.options || baseQuestion.options.length < 2) {
