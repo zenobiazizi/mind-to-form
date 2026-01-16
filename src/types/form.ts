@@ -46,10 +46,34 @@ export interface FormResponse {
 }
 
 export const THEME_OPTIONS = [
-  { id: 'theme_default', name: '极简白', description: '干净通用', className: '' },
-  { id: 'theme_night', name: '深邃夜', description: '科技感', className: 'theme-night' },
-  { id: 'theme_warm', name: '暖阳橙', description: '柔和温馨', className: 'theme-warm' },
-  { id: 'theme_fresh', name: '清新绿', description: '自然清新', className: 'theme-fresh' },
+  { 
+    id: 'theme_default', 
+    name: '极简白', 
+    description: '纯白无框，极细字体', 
+    className: 'theme-default',
+    preview: { bg: '#FFFFFF', accent: '#1a1a1a', style: 'minimalist' }
+  },
+  { 
+    id: 'theme_night', 
+    name: '深邃夜', 
+    description: '赛博科技，霓虹荧光', 
+    className: 'theme-night',
+    preview: { bg: '#0f1420', accent: '#a78bfa', style: 'cyber' }
+  },
+  { 
+    id: 'theme_warm', 
+    name: '温柔风', 
+    description: '米色圆角，柔和舒适', 
+    className: 'theme-warm',
+    preview: { bg: '#f5f0e8', accent: '#e87f3a', style: 'soft' }
+  },
+  { 
+    id: 'theme_fresh', 
+    name: '专业蓝', 
+    description: '经典商务，沉稳专业', 
+    className: 'theme-fresh',
+    preview: { bg: '#f0f2f5', accent: '#1e4a8c', style: 'professional' }
+  },
 ] as const;
 
 export const DEFAULT_FORM: FormData = {
