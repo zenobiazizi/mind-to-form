@@ -1,8 +1,6 @@
 import { FormData, Question, QuestionType } from '@/types/form';
 import { nanoid } from 'nanoid';
-
-// Dify Workflow API configuration
-const DIFY_API_URL = 'https://api.dify.ai/v1/workflows/run';
+import { supabase } from '@/integrations/supabase/client';
 
 interface DifyQuestion {
   id?: string;
@@ -95,63 +93,24 @@ const parseDifyResponse = (difyData: DifyFormResponse): FormData => {
   };
 };
 
-// Call Dify Workflow API to generate form
+// Call Dify Workflow API via Edge Function
 export const generateFormFromDify = async (prompt: string): Promise<FormData> => {
-  const apiKey = import.meta.env.VITE_DIFY_API_KEY;
-  
-  if (!apiKey) {
-    throw new Error('DIFY_API_KEY is not configured');
-  }
-
   try {
-    const response = await fetch(DIFY_API_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        inputs: {
-          prompt: prompt,
-        },
-        response_mode: 'blocking',
-        user: `user_${nanoid(8)}`,
-      }),
+    const { data, error } = await supabase.functions.invoke('generate-form', {
+      body: { prompt },
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Dify API error:', response.status, errorText);
-      throw new Error(`Dify API error: ${response.status}`);
+    if (error) {
+      console.error('Edge function error:', error);
+      throw new Error(error.message || 'Failed to generate form');
     }
 
-    const result = await response.json();
-    
-    // Extract the output from Dify workflow response
-    // Dify workflow returns { data: { outputs: { ... } } }
-    let formData: DifyFormResponse;
-    
-    if (result.data?.outputs) {
-      // Try to parse if it's a string
-      const outputs = result.data.outputs;
-      if (typeof outputs === 'string') {
-        formData = JSON.parse(outputs);
-      } else if (outputs.result && typeof outputs.result === 'string') {
-        formData = JSON.parse(outputs.result);
-      } else if (outputs.text && typeof outputs.text === 'string') {
-        formData = JSON.parse(outputs.text);
-      } else {
-        formData = outputs;
-      }
-    } else if (result.outputs) {
-      formData = typeof result.outputs === 'string' 
-        ? JSON.parse(result.outputs) 
-        : result.outputs;
-    } else {
-      formData = result;
+    if (!data || !data.data) {
+      console.error('Invalid response from edge function:', data);
+      throw new Error('Invalid response from server');
     }
 
-    return parseDifyResponse(formData);
+    return parseDifyResponse(data.data);
   } catch (error) {
     console.error('Failed to generate form from Dify:', error);
     throw error;
