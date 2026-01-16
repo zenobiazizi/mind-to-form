@@ -81,112 +81,212 @@
     --spacing: 0.25rem;
   }
 
-  /* Theme: Night - Deep Navy */
+  /* ============================
+     Theme: Minimalist - 极简白
+     Pure white, no borders/shadows, ultra-thin typography
+     ============================ */
+  .theme-default {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+
+    --primary: 0 0% 8%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 8%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 0 0% 8%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 8%;
+
+    --radius: 0.25rem;
+
+    --gradient-primary: none;
+    --shadow-soft: none;
+    --shadow-card: none;
+    --shadow-elevated: none;
+
+    /* Minimalist specific tokens */
+    --theme-card-border: none;
+    --theme-card-shadow: none;
+    --theme-card-radius: 0;
+    --theme-font-weight: 300;
+    --theme-letter-spacing: 0.05em;
+    --theme-selected-style: 0 0 0 2px hsl(0 0% 8%);
+    --theme-input-border-style: 0 2px 0 0 hsl(var(--border));
+    --theme-backdrop-blur: none;
+  }
+
+  /* ============================
+     Theme: Night - 深邃夜/赛博科技
+     Deep blue, frosted glass, neon glow
+     ============================ */
   .theme-night {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
+    --background: 230 25% 7%;
+    --foreground: 0 0% 98%;
 
-    --card: 222 47% 9%;
-    --card-foreground: 210 40% 98%;
+    --card: 230 30% 12%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222 47% 9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 230 30% 12%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 252 100% 70%;
-    --primary-foreground: 222 47% 6%;
+    --primary: 265 100% 70%;
+    --primary-foreground: 230 25% 7%;
 
-    --secondary: 222 30% 14%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 230 25% 15%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 222 30% 14%;
-    --muted-foreground: 220 14% 60%;
+    --muted: 230 20% 18%;
+    --muted-foreground: 230 15% 60%;
 
-    --accent: 252 100% 70%;
-    --accent-foreground: 222 47% 6%;
+    --accent: 265 100% 70%;
+    --accent-foreground: 230 25% 7%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 222 30% 18%;
-    --input: 222 30% 18%;
-    --ring: 252 100% 70%;
+    --border: 265 50% 35%;
+    --input: 230 25% 20%;
+    --ring: 265 100% 70%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(252 100% 70%), hsl(280 100% 75%));
-    --shadow-soft: 0 4px 24px -4px hsl(252 100% 70% / 0.25);
-    --shadow-card: 0 1px 3px 0 hsl(0 0% 0% / 0.2);
-    --shadow-elevated: 0 10px 40px -10px hsl(0 0% 0% / 0.4);
+    --radius: 1rem;
+
+    --gradient-primary: linear-gradient(135deg, hsl(265 100% 70%), hsl(290 100% 75%));
+    --shadow-soft: 0 4px 30px -4px hsl(265 100% 70% / 0.35);
+    --shadow-card: 0 8px 32px -8px hsl(265 100% 70% / 0.25), inset 0 0 0 1px hsl(265 50% 45% / 0.3);
+    --shadow-elevated: 0 16px 48px -12px hsl(0 0% 0% / 0.6);
+
+    /* Night specific tokens */
+    --theme-card-border: 1px solid hsl(265 50% 45% / 0.4);
+    --theme-card-shadow: 0 0 20px hsl(265 100% 70% / 0.15), inset 0 0 0 1px hsl(265 50% 50% / 0.2);
+    --theme-card-radius: 1.25rem;
+    --theme-card-bg: hsl(230 30% 12% / 0.7);
+    --theme-font-weight: 400;
+    --theme-letter-spacing: 0.02em;
+    --theme-selected-style: 0 0 12px hsl(265 100% 70% / 0.6), inset 0 0 0 2px hsl(265 100% 70%);
+    --theme-input-border-style: 0 0 0 1px hsl(265 50% 40% / 0.5);
+    --theme-backdrop-blur: blur(16px);
+    --theme-glow-color: 265 100% 70%;
   }
 
-  /* Theme: Warm - Cream & Amber */
+  /* ============================
+     Theme: Warm - 温柔风
+     Beige background, large radius, soft orange shadows, serif font
+     ============================ */
   .theme-warm {
-    --background: 40 33% 96%;
-    --foreground: 30 20% 15%;
+    --background: 45 33% 94%;
+    --foreground: 30 25% 18%;
 
-    --card: 40 40% 98%;
-    --card-foreground: 30 20% 15%;
+    --card: 45 40% 98%;
+    --card-foreground: 30 25% 18%;
 
-    --popover: 40 40% 98%;
-    --popover-foreground: 30 20% 15%;
+    --popover: 45 40% 98%;
+    --popover-foreground: 30 25% 18%;
 
-    --primary: 25 95% 53%;
+    --primary: 25 90% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 30% 92%;
-    --secondary-foreground: 30 20% 15%;
+    --secondary: 40 35% 92%;
+    --secondary-foreground: 30 25% 18%;
 
-    --muted: 40 25% 90%;
-    --muted-foreground: 30 10% 45%;
+    --muted: 40 28% 88%;
+    --muted-foreground: 30 15% 45%;
 
-    --accent: 25 95% 53%;
+    --accent: 25 90% 55%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 80% 58%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 20% 88%;
-    --input: 40 20% 88%;
-    --ring: 25 95% 53%;
+    --border: 40 25% 85%;
+    --input: 40 25% 85%;
+    --ring: 25 90% 55%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(25 95% 53%), hsl(40 100% 50%));
-    --shadow-soft: 0 4px 24px -4px hsl(25 95% 53% / 0.2);
-    --shadow-card: 0 1px 3px 0 hsl(30 20% 20% / 0.06);
-    --shadow-elevated: 0 10px 40px -10px hsl(30 20% 20% / 0.15);
+    --radius: 1.5rem;
+
+    --gradient-primary: linear-gradient(135deg, hsl(25 90% 55%), hsl(40 95% 55%));
+    --shadow-soft: 0 8px 32px -8px hsl(25 90% 55% / 0.3);
+    --shadow-card: 0 4px 20px -4px hsl(25 60% 50% / 0.15);
+    --shadow-elevated: 0 16px 48px -12px hsl(30 30% 30% / 0.2);
+
+    /* Warm specific tokens */
+    --theme-card-border: none;
+    --theme-card-shadow: 0 8px 32px -8px hsl(25 70% 50% / 0.2);
+    --theme-card-radius: 1.5rem;
+    --theme-font-weight: 400;
+    --theme-letter-spacing: 0.01em;
+    --theme-selected-style: 0 4px 16px hsl(25 90% 55% / 0.35), inset 0 0 0 2px hsl(25 90% 55%);
+    --theme-input-border-style: 0 2px 0 0 hsl(25 60% 70%);
+    --theme-backdrop-blur: none;
+    --theme-font-family: 'Source Serif Pro', Georgia, serif;
   }
 
-  /* Theme: Fresh - Mint Green */
+  /* ============================
+     Theme: Fresh - 专业蓝
+     Classic gray bg, white cards, navy accents, left decoration bar
+     ============================ */
   .theme-fresh {
-    --background: 150 25% 97%;
-    --foreground: 160 30% 12%;
+    --background: 220 15% 95%;
+    --foreground: 220 30% 15%;
 
-    --card: 150 30% 99%;
-    --card-foreground: 160 30% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 30% 15%;
 
-    --popover: 150 30% 99%;
-    --popover-foreground: 160 30% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 30% 15%;
 
-    --primary: 158 64% 42%;
+    --primary: 220 65% 35%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 150 20% 93%;
-    --secondary-foreground: 160 30% 12%;
+    --secondary: 220 15% 90%;
+    --secondary-foreground: 220 30% 15%;
 
-    --muted: 150 15% 91%;
-    --muted-foreground: 160 15% 45%;
+    --muted: 220 12% 88%;
+    --muted-foreground: 220 15% 45%;
 
-    --accent: 158 64% 42%;
+    --accent: 220 65% 35%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 80% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 150 15% 88%;
-    --input: 150 15% 88%;
-    --ring: 158 64% 42%;
+    --border: 220 15% 85%;
+    --input: 220 15% 85%;
+    --ring: 220 65% 35%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(158 64% 42%), hsl(172 66% 50%));
-    --shadow-soft: 0 4px 24px -4px hsl(158 64% 42% / 0.2);
-    --shadow-card: 0 1px 3px 0 hsl(160 30% 12% / 0.05);
-    --shadow-elevated: 0 10px 40px -10px hsl(160 30% 12% / 0.12);
+    --radius: 0.5rem;
+
+    --gradient-primary: linear-gradient(135deg, hsl(220 65% 35%), hsl(220 70% 45%));
+    --shadow-soft: 0 4px 16px -4px hsl(220 65% 35% / 0.2);
+    --shadow-card: 0 2px 8px -2px hsl(220 20% 20% / 0.08);
+    --shadow-elevated: 0 12px 36px -12px hsl(220 20% 20% / 0.15);
+
+    /* Fresh/Professional specific tokens */
+    --theme-card-border: 1px solid hsl(220 15% 88%);
+    --theme-card-shadow: 0 2px 8px -2px hsl(220 20% 20% / 0.08);
+    --theme-card-radius: 0.5rem;
+    --theme-font-weight: 500;
+    --theme-letter-spacing: 0em;
+    --theme-selected-style: 0 0 0 2px hsl(220 65% 35%);
+    --theme-input-border-style: 0 0 0 1px hsl(220 15% 80%);
+    --theme-backdrop-blur: none;
+    --theme-accent-bar: 4px solid hsl(220 65% 35%);
   }
   .dark {
     --background: 24 9% 10%;
