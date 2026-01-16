@@ -44,7 +44,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         inputs: {
-          prompt: prompt,
+          user_query: prompt,
         },
         response_mode: 'blocking',
         user: `user_${crypto.randomUUID().substring(0, 8)}`,
