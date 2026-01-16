@@ -210,73 +210,75 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
 
   // Theme-specific card styles
   const getCardClasses = () => {
-    const base = "p-6 transition-all duration-300";
+    const base = "transition-all duration-300";
     switch (themeStyle) {
       case 'minimalist':
-        return cn(base, "bg-transparent border-b border-border pb-8");
+        // 极简：无边框无阴影，仅用极淡的间距分隔
+        return cn(base, "bg-transparent py-6");
       case 'cyber':
         return cn(
           base,
-          "bg-card/70 backdrop-blur-xl rounded-2xl",
+          "bg-card/70 backdrop-blur-xl rounded-xl p-5",
           "border border-[hsl(var(--primary)/0.3)]",
-          "shadow-[0_0_20px_hsl(var(--primary)/0.1),inset_0_0_0_1px_hsl(var(--primary)/0.1)]"
+          "shadow-[0_0_15px_hsl(var(--primary)/0.1)]"
         );
       case 'soft':
         return cn(
           base,
-          "bg-card rounded-[1.5rem]",
-          "shadow-[0_8px_32px_-8px_hsl(25_70%_50%/0.2)]"
+          "bg-card rounded-xl p-5",
+          "shadow-[0_4px_16px_-4px_hsl(25_70%_50%/0.15)]"
         );
       case 'professional':
         return cn(
           base,
-          "bg-card rounded-lg border border-border",
+          "bg-card rounded-md p-5 border border-border",
           "shadow-sm relative overflow-hidden",
           "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-primary"
         );
       default:
-        return cn(base, "bg-card rounded-2xl shadow-card border border-border/30");
+        return cn(base, "bg-card rounded-xl p-5 shadow-card border border-border/30");
     }
   };
 
   // Theme-specific option styles
   const getOptionClasses = (isSelected: boolean) => {
-    const base = "w-full flex items-center gap-4 p-4 transition-all text-left";
+    const base = "w-full flex items-center gap-3 transition-all text-left";
     switch (themeStyle) {
       case 'minimalist':
+        // 极简：无边框，选中仅高亮文字
         return cn(
           base,
-          "bg-transparent border-0 border-b border-border/50 rounded-none",
-          isSelected && "border-b-2 border-foreground"
+          "bg-transparent py-2 px-0",
+          isSelected ? "text-foreground" : "text-muted-foreground hover:text-foreground"
         );
       case 'cyber':
         return cn(
           base,
-          "rounded-xl border backdrop-blur-sm",
+          "rounded-lg border backdrop-blur-sm py-3 px-4",
           isSelected
-            ? "border-primary bg-primary/10 shadow-[0_0_15px_hsl(var(--primary)/0.3)]"
-            : "border-[hsl(var(--primary)/0.2)] bg-background/30 hover:border-primary/50 hover:bg-primary/5"
+            ? "border-primary bg-primary/10 shadow-[0_0_12px_hsl(var(--primary)/0.25)]"
+            : "border-[hsl(var(--primary)/0.2)] bg-background/30 hover:border-primary/50"
         );
       case 'soft':
         return cn(
           base,
-          "rounded-2xl border-2",
+          "rounded-lg border py-3 px-4",
           isSelected
-            ? "border-primary bg-primary/5 shadow-[0_4px_16px_hsl(25_90%_55%/0.2)]"
+            ? "border-primary bg-primary/5 shadow-[0_2px_8px_hsl(25_90%_55%/0.15)]"
             : "border-border/50 hover:border-primary/30 bg-background/50"
         );
       case 'professional':
         return cn(
           base,
-          "rounded-lg border",
+          "rounded-md border py-3 px-4",
           isSelected
-            ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+            ? "border-primary bg-primary/5 ring-1 ring-primary/20"
             : "border-border hover:border-primary/40 bg-background"
         );
       default:
         return cn(
           base,
-          "rounded-xl border-2",
+          "rounded-lg border py-3 px-4",
           isSelected
             ? "border-primary bg-primary/5"
             : "border-border/50 hover:border-primary/30 bg-background/50"
@@ -350,7 +352,7 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
 
       {/* Radio options */}
       {question.type === 'radio' && question.options && (
-        <div className="space-y-3">
+        <div className={cn("space-y-2", themeStyle === 'minimalist' && "space-y-1")}>
           {question.options.map((option) => (
             <motion.button
               key={option.id}
@@ -388,7 +390,7 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
 
       {/* Checkbox options */}
       {question.type === 'checkbox' && question.options && (
-        <div className="space-y-3">
+        <div className={cn("space-y-2", themeStyle === 'minimalist' && "space-y-1")}>
           {question.options.map((option) => {
             const isChecked = (answer || []).includes(option.id);
             return (
@@ -432,14 +434,14 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
             value={answer || ''}
             onChange={(e) => onAnswer(e.target.value)}
             placeholder={question.placeholder}
-            rows={3}
+            rows={2}
             className={cn(
-              "w-full px-4 py-3 resize-none focus:outline-none transition-colors text-foreground placeholder:text-muted-foreground/50",
+              "w-full px-3 py-2 resize-none focus:outline-none transition-colors text-foreground placeholder:text-muted-foreground/50",
               // Theme-specific input styles
-              themeStyle === 'minimalist' && "bg-transparent border-0 border-b-2 border-border focus:border-foreground rounded-none font-light",
-              themeStyle === 'cyber' && "bg-background/30 backdrop-blur-sm border border-[hsl(var(--primary)/0.3)] rounded-xl focus:border-primary focus:shadow-[0_0_15px_hsl(var(--primary)/0.2)]",
-              themeStyle === 'soft' && "bg-background/50 border-2 border-border/50 rounded-2xl focus:border-primary font-serif",
-              themeStyle === 'professional' && "bg-background border border-border rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20"
+              themeStyle === 'minimalist' && "bg-transparent border-0 border-b border-border/60 focus:border-foreground rounded-none font-light text-sm",
+              themeStyle === 'cyber' && "bg-background/30 backdrop-blur-sm border border-[hsl(var(--primary)/0.3)] rounded-lg focus:border-primary focus:shadow-[0_0_10px_hsl(var(--primary)/0.15)]",
+              themeStyle === 'soft' && "bg-background/50 border border-border/50 rounded-lg focus:border-primary font-serif",
+              themeStyle === 'professional' && "bg-background border border-border rounded-md focus:border-primary focus:ring-1 focus:ring-primary/20"
             )}
           />
         </div>
