@@ -113,27 +113,27 @@ const FormViewer: React.FC<FormViewerProps> = ({ formData, isPreview = false, on
   return (
     <div className={cn("min-h-screen transition-colors duration-500", themeClass)}>
       <div className={getContainerClasses()}>
-        <div className="max-w-xl mx-auto px-6 py-12">
+        <div className="max-w-lg mx-auto px-5 py-8">
           <motion.form
             onSubmit={handleSubmit}
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="space-y-8"
+            className={cn("space-y-5", themeStyle === 'minimalist' && "space-y-8")}
           >
             {/* Header */}
-            <motion.div variants={itemVariants} className="text-center mb-12">
+            <motion.div variants={itemVariants} className={cn("text-center", themeStyle === 'minimalist' ? "mb-10" : "mb-6")}>
               <h1 className={cn(
-                "text-3xl font-bold text-foreground mb-3 transition-all",
-                themeStyle === 'minimalist' && "font-light tracking-[0.1em] text-4xl",
+                "text-2xl font-semibold text-foreground mb-2 transition-all",
+                themeStyle === 'minimalist' && "font-light tracking-[0.08em] text-3xl",
                 themeStyle === 'soft' && "font-serif",
                 themeStyle === 'cyber' && "text-gradient"
               )}>
                 {formData.form_meta.title}
               </h1>
               <p className={cn(
-                "text-lg text-muted-foreground leading-relaxed",
-                themeStyle === 'minimalist' && "font-light tracking-wide",
+                "text-base text-muted-foreground",
+                themeStyle === 'minimalist' && "font-light tracking-wide text-sm",
                 themeStyle === 'soft' && "font-serif"
               )}>
                 {formData.form_meta.description}
@@ -156,21 +156,21 @@ const FormViewer: React.FC<FormViewerProps> = ({ formData, isPreview = false, on
 
             {/* Submit button */}
             {formData.questions.length > 0 && (
-              <motion.div variants={itemVariants} className="pt-6">
+              <motion.div variants={itemVariants} className={cn("pt-4", themeStyle === 'minimalist' && "pt-8")}>
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.99 }}
                   className={cn(
-                    "w-full py-4 px-6 font-semibold text-lg transition-all flex items-center justify-center gap-2",
+                    "w-full py-3 px-5 font-medium text-sm transition-all flex items-center justify-center gap-2",
                     // Theme-specific button styles
-                    themeStyle === 'minimalist' && "bg-foreground text-background rounded-none font-light tracking-widest hover:bg-foreground/90",
-                    themeStyle === 'cyber' && "bg-gradient-to-r from-primary to-[hsl(290_100%_70%)] text-primary-foreground rounded-2xl shadow-[0_0_20px_hsl(var(--primary)/0.5)] hover:shadow-[0_0_30px_hsl(var(--primary)/0.7)]",
-                    themeStyle === 'soft' && "bg-primary text-primary-foreground rounded-[2rem] shadow-lg font-serif hover:opacity-90",
-                    themeStyle === 'professional' && "bg-primary text-primary-foreground rounded-lg shadow-md hover:bg-primary/90"
+                    themeStyle === 'minimalist' && "bg-foreground text-background rounded-none font-light tracking-widest text-xs py-3 hover:bg-foreground/90",
+                    themeStyle === 'cyber' && "bg-gradient-to-r from-primary to-[hsl(290_100%_70%)] text-primary-foreground rounded-md shadow-[0_0_12px_hsl(var(--primary)/0.4)] hover:shadow-[0_0_20px_hsl(var(--primary)/0.6)]",
+                    themeStyle === 'soft' && "bg-primary text-primary-foreground rounded-lg shadow-md font-serif hover:opacity-90",
+                    themeStyle === 'professional' && "bg-primary text-primary-foreground rounded-md shadow-sm hover:bg-primary/90"
                   )}
                 >
-                  <Send className="w-5 h-5" />
+                  <Send className="w-4 h-4" />
                   提交问卷
                 </motion.button>
               </motion.div>
@@ -210,86 +210,88 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
 
   // Theme-specific card styles
   const getCardClasses = () => {
-    const base = "transition-all duration-300";
+    const base = "transition-all duration-200";
     switch (themeStyle) {
       case 'minimalist':
-        // 极简：无边框无阴影，仅用极淡的间距分隔
-        return cn(base, "bg-transparent py-6");
+        // 极简：完全无框设计，纯白背景，无边框无阴影
+        return cn(base, "bg-transparent");
       case 'cyber':
         return cn(
           base,
-          "bg-card/70 backdrop-blur-xl rounded-xl p-5",
-          "border border-[hsl(var(--primary)/0.3)]",
-          "shadow-[0_0_15px_hsl(var(--primary)/0.1)]"
+          "bg-card/60 backdrop-blur-md rounded-md px-4 py-3",
+          "border border-[hsl(var(--primary)/0.25)]",
+          "shadow-[0_0_8px_hsl(var(--primary)/0.08)]"
         );
       case 'soft':
         return cn(
           base,
-          "bg-card rounded-xl p-5",
-          "shadow-[0_4px_16px_-4px_hsl(25_70%_50%/0.15)]"
+          "bg-card rounded-lg px-4 py-3",
+          "shadow-[0_2px_8px_-2px_hsl(25_70%_50%/0.12)]"
         );
       case 'professional':
         return cn(
           base,
-          "bg-card rounded-md p-5 border border-border",
-          "shadow-sm relative overflow-hidden",
-          "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-primary"
+          "bg-card rounded px-4 py-3 border border-[#e5e5e5]",
+          "shadow-[0_1px_2px_rgba(0,0,0,0.04)] relative overflow-hidden",
+          "before:absolute before:left-0 before:top-0 before:bottom-0 before:w-0.5 before:bg-primary"
         );
       default:
-        return cn(base, "bg-card rounded-xl p-5 shadow-card border border-border/30");
+        return cn(base, "bg-card rounded-lg px-4 py-3 shadow-sm border border-[#e8e8e8]");
     }
   };
 
   // Theme-specific option styles
   const getOptionClasses = (isSelected: boolean) => {
-    const base = "w-full flex items-center gap-3 transition-all text-left";
+    const base = "w-full flex items-center gap-2.5 transition-all text-left text-sm";
     switch (themeStyle) {
       case 'minimalist':
-        // 极简：无边框，选中仅高亮文字
+        // 极简：完全无框，选中时仅极浅灰背景
         return cn(
           base,
-          "bg-transparent py-2 px-0",
-          isSelected ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+          "bg-transparent py-1.5 px-0 rounded-none",
+          isSelected 
+            ? "text-foreground bg-foreground/[0.03]" 
+            : "text-muted-foreground hover:text-foreground"
         );
       case 'cyber':
         return cn(
           base,
-          "rounded-lg border backdrop-blur-sm py-3 px-4",
+          "rounded py-2 px-3 border backdrop-blur-sm",
           isSelected
-            ? "border-primary bg-primary/10 shadow-[0_0_12px_hsl(var(--primary)/0.25)]"
-            : "border-[hsl(var(--primary)/0.2)] bg-background/30 hover:border-primary/50"
+            ? "border-primary bg-primary/10 shadow-[0_0_8px_hsl(var(--primary)/0.2)]"
+            : "border-[hsl(var(--primary)/0.15)] bg-background/20 hover:border-primary/40"
         );
       case 'soft':
         return cn(
           base,
-          "rounded-lg border py-3 px-4",
+          "rounded-md py-2 px-3 border",
           isSelected
-            ? "border-primary bg-primary/5 shadow-[0_2px_8px_hsl(25_90%_55%/0.15)]"
-            : "border-border/50 hover:border-primary/30 bg-background/50"
+            ? "border-primary/60 bg-primary/5"
+            : "border-[#e5e5e5] hover:border-primary/30 bg-background/30"
         );
       case 'professional':
         return cn(
           base,
-          "rounded-md border py-3 px-4",
+          "rounded py-2 px-3 border",
           isSelected
-            ? "border-primary bg-primary/5 ring-1 ring-primary/20"
-            : "border-border hover:border-primary/40 bg-background"
+            ? "border-primary bg-primary/5"
+            : "border-[#e5e5e5] hover:border-primary/30 bg-background"
         );
       default:
         return cn(
           base,
-          "rounded-lg border py-3 px-4",
+          "rounded py-2 px-3 border",
           isSelected
             ? "border-primary bg-primary/5"
-            : "border-border/50 hover:border-primary/30 bg-background/50"
+            : "border-[#e5e5e5] hover:border-primary/20 bg-background/50"
         );
     }
   };
 
   // Theme-specific indicator styles
   const getIndicatorClasses = (isSelected: boolean, isCheckbox: boolean = false) => {
-    const shape = isCheckbox ? "rounded-md" : "rounded-full";
-    const base = `flex items-center justify-center w-5 h-5 ${shape} border-2 transition-all`;
+    const shape = isCheckbox ? "rounded-sm" : "rounded-full";
+    const base = `flex-shrink-0 flex items-center justify-center w-4 h-4 ${shape} border transition-all`;
     
     switch (themeStyle) {
       case 'minimalist':
@@ -297,35 +299,35 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
           base,
           isSelected
             ? "border-foreground bg-foreground"
-            : "border-foreground/30"
+            : "border-foreground/25"
         );
       case 'cyber':
         return cn(
           base,
           isSelected
-            ? "border-primary bg-primary shadow-[0_0_10px_hsl(var(--primary)/0.5)]"
-            : "border-primary/40"
+            ? "border-primary bg-primary shadow-[0_0_6px_hsl(var(--primary)/0.4)]"
+            : "border-primary/35"
         );
       case 'soft':
         return cn(
           base,
           isSelected
             ? "border-primary bg-primary"
-            : "border-muted-foreground/30"
+            : "border-muted-foreground/25"
         );
       case 'professional':
         return cn(
           base,
           isSelected
             ? "border-primary bg-primary"
-            : "border-muted-foreground/40"
+            : "border-muted-foreground/30"
         );
       default:
         return cn(
           base,
           isSelected
             ? "border-primary bg-primary"
-            : "border-muted-foreground/30"
+            : "border-muted-foreground/25"
         );
     }
   };
@@ -336,33 +338,30 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
       className={getCardClasses()}
     >
       <h3 className={cn(
-        "text-xl font-semibold text-foreground mb-4 leading-relaxed",
-        themeStyle === 'minimalist' && "font-light tracking-wide text-lg",
+        "text-base font-medium text-foreground mb-2.5 leading-normal",
+        themeStyle === 'minimalist' && "font-light tracking-wide text-sm mb-3",
         themeStyle === 'soft' && "font-serif"
       )}>
-        <span className="text-muted-foreground mr-2">{index + 1}.</span>
+        <span className="text-muted-foreground/70 mr-1.5 text-sm">{index + 1}.</span>
         {question.title}
         {question.required && (
           <span className={cn(
-            "ml-1",
-            themeStyle === 'professional' ? "text-destructive font-bold text-lg" : "text-destructive"
+            "ml-0.5 text-xs",
+            themeStyle === 'professional' ? "text-destructive font-medium" : "text-destructive/70"
           )}>*</span>
         )}
       </h3>
 
       {/* Radio options */}
       {question.type === 'radio' && question.options && (
-        <div className={cn("space-y-2", themeStyle === 'minimalist' && "space-y-1")}>
+        <div className={cn("space-y-1.5", themeStyle === 'minimalist' && "space-y-0.5")}>
           {question.options.map((option) => (
             <motion.button
               key={option.id}
               type="button"
               onClick={() => handleOptionSelect(option.id)}
-              whileTap={{ scale: 0.98 }}
-              className={cn(
-                getOptionClasses(selectedOption === option.id),
-                selectedOption === option.id && themeStyle !== 'minimalist' && "animate-jelly"
-              )}
+              whileTap={{ scale: 0.995 }}
+              className={getOptionClasses(selectedOption === option.id)}
             >
               <span className={getIndicatorClasses(selectedOption === option.id)}>
                 {selectedOption === option.id && (
@@ -370,14 +369,14 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     className={cn(
-                      "rounded-full",
-                      themeStyle === 'minimalist' ? "w-1.5 h-1.5 bg-background" : "w-2 h-2 bg-primary-foreground"
+                      "rounded-full w-1.5 h-1.5",
+                      themeStyle === 'minimalist' ? "bg-background" : "bg-primary-foreground"
                     )}
                   />
                 )}
               </span>
               <span className={cn(
-                "text-foreground font-medium",
+                "text-foreground",
                 themeStyle === 'minimalist' && "font-light",
                 themeStyle === 'soft' && "font-serif"
               )}>
@@ -390,7 +389,7 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
 
       {/* Checkbox options */}
       {question.type === 'checkbox' && question.options && (
-        <div className={cn("space-y-2", themeStyle === 'minimalist' && "space-y-1")}>
+        <div className={cn("space-y-1.5", themeStyle === 'minimalist' && "space-y-0.5")}>
           {question.options.map((option) => {
             const isChecked = (answer || []).includes(option.id);
             return (
@@ -398,24 +397,21 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
                 key={option.id}
                 type="button"
                 onClick={() => onToggleCheckbox(option.id)}
-                whileTap={{ scale: 0.98 }}
-                className={cn(
-                  getOptionClasses(isChecked),
-                  isChecked && themeStyle !== 'minimalist' && "animate-jelly"
-                )}
+                whileTap={{ scale: 0.995 }}
+                className={getOptionClasses(isChecked)}
               >
                 <span className={getIndicatorClasses(isChecked, true)}>
                   {isChecked && (
                     <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}>
                       <Check className={cn(
-                        "w-3 h-3",
+                        "w-2.5 h-2.5",
                         themeStyle === 'minimalist' ? "text-background" : "text-primary-foreground"
                       )} />
                     </motion.span>
                   )}
                 </span>
                 <span className={cn(
-                  "text-foreground font-medium",
+                  "text-foreground",
                   themeStyle === 'minimalist' && "font-light",
                   themeStyle === 'soft' && "font-serif"
                 )}>
@@ -436,12 +432,12 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
             placeholder={question.placeholder}
             rows={2}
             className={cn(
-              "w-full px-3 py-2 resize-none focus:outline-none transition-colors text-foreground placeholder:text-muted-foreground/50",
+              "w-full px-2.5 py-1.5 resize-none focus:outline-none transition-colors text-foreground text-sm placeholder:text-muted-foreground/40",
               // Theme-specific input styles
-              themeStyle === 'minimalist' && "bg-transparent border-0 border-b border-border/60 focus:border-foreground rounded-none font-light text-sm",
-              themeStyle === 'cyber' && "bg-background/30 backdrop-blur-sm border border-[hsl(var(--primary)/0.3)] rounded-lg focus:border-primary focus:shadow-[0_0_10px_hsl(var(--primary)/0.15)]",
-              themeStyle === 'soft' && "bg-background/50 border border-border/50 rounded-lg focus:border-primary font-serif",
-              themeStyle === 'professional' && "bg-background border border-border rounded-md focus:border-primary focus:ring-1 focus:ring-primary/20"
+              themeStyle === 'minimalist' && "bg-transparent border-0 border-b border-foreground/10 focus:border-foreground/40 rounded-none font-light",
+              themeStyle === 'cyber' && "bg-background/20 backdrop-blur-sm border border-[hsl(var(--primary)/0.2)] rounded focus:border-primary",
+              themeStyle === 'soft' && "bg-background/30 border border-[#e5e5e5] rounded-md focus:border-primary font-serif",
+              themeStyle === 'professional' && "bg-background border border-[#e5e5e5] rounded focus:border-primary"
             )}
           />
         </div>
@@ -449,25 +445,25 @@ const QuestionRenderer: React.FC<QuestionRendererProps> = ({
 
       {/* Rating */}
       {question.type === 'rating' && (
-        <div className="flex gap-2 justify-center py-2">
+        <div className="flex gap-1 justify-center py-1">
           {Array.from({ length: question.maxRating || 5 }).map((_, i) => (
             <motion.button
               key={i}
               type="button"
               onClick={() => onAnswer(i + 1)}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="p-1"
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
+              className="p-0.5"
             >
               <Star
                 className={cn(
-                  "w-10 h-10 transition-all",
+                  "w-7 h-7 transition-all",
                   (answer || 0) > i
                     ? cn(
                         "text-primary fill-primary",
-                        themeStyle === 'cyber' && "drop-shadow-[0_0_8px_hsl(var(--primary))]"
+                        themeStyle === 'cyber' && "drop-shadow-[0_0_5px_hsl(var(--primary))]"
                       )
-                    : "text-muted-foreground/30 hover:text-primary/50"
+                    : "text-muted-foreground/20 hover:text-primary/40"
                 )}
               />
             </motion.button>
